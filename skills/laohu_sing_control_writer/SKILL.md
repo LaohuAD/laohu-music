@@ -21,11 +21,73 @@ description: Use when 老胡需要生成或修改 style prompt、controlled lyri
 style prompt 必须是正向窄描述：写目标声音是什么，不把 No / Avoid / 不要 / 避免 写进投喂文本。
 controlled lyrics 不改歌词正文，只控制段落和关键行。
 [] 控制段落整体能量、空间、编曲动态和人声距离。
-[()] 控制紧跟的一句歌词，必须是具体声学动作，不是情绪形容词。
+[()] 控制紧跟的下一句歌词，必须单独成行放在被控制歌词的上一行；不能和歌词写在同一行。内容必须是具体声学动作，不是情绪形容词。
 核心 hook、转折句、暴露句、尾句必须有声音让位或行级控制；普通句不要过控。
 如果歌词采用“主歌、预副歌、副歌共享高凝练度”的写法，演唱控制不能只把 Chorus 当成唯一重点。Verse 要给叙事中的强物件、强动作和家族韵尾留下清晰咬字；Pre 要用更收紧的距离、弱起、停顿或上行控制埋情绪；Chorus 再用更大的动态和拖音释放。控制目标是让不同乐段功能不同，但都像歌、都被听见。
 如果任务是纯 BGM / instrumental score / 短剧配乐，也必须输出两栏投喂文本：style prompt 放声音风格，controlled lyrics / Custom Lyrics 放无歌词曲式结构控制。歌词框不能空着，也不能填普通说明；应使用 [Instrumental Intro]、[Theme A]、[Build]、[Break]、[Outro] 等段落标签控制进入、铺垫、断点、留白和收尾。
 ```
+
+默认按商业传播型声音方案生成。style prompt 和 controlled lyrics 必须优先让主 hook 被听见、被记住、被截取：副歌前留 hook space，副歌核心句少遮挡，Final Chorus 有可剪辑高点，尾钩有清楚落拍。文学氛围、复杂编曲、转音和和声只能在不挡歌词、不稀释 hook、不降低 BGM / OST / 广告使用性的前提下增加。
+
+商业传播声音硬门：
+
+```text
+副歌核心句必须有编曲让位、清楚咬字或尾音承接；不能被垫乐、和声和混响盖住。
+C1 / C2 / Final Chorus 的能量递进要清楚，但主旋律和主 hook 不能被控制标签改散。
+至少设计一个 8-15 秒可截取段落，适合短视频 BGM、视频转场、OST 情绪点或广告结尾。
+Verse / Pre 保持叙事清晰和画面进入，不要铺满导致无法当背景音乐使用。
+Final Chorus / Outro 的最后一口气要适合字幕落点和观众记忆，不要只做文学淡出。
+```
+
+商业切片不能只写在 style prompt 里。凡是项目目标包含短视频、BGM、转场、OST 或广告情绪 cue，writer 必须在 controlled lyrics 中明确锁定一个 8-15 秒窗口：用一个独立段落标签或精简短段控制，把窗口集中在主 hook、关系判词或最终尾钩上。不能只写 `clear 8-15 second short-video hook section` 这类全局声明，然后在歌词控制里仍然让副歌完整叙事、饭桌动作、主 hook 和尾钩平均展开。判断标准：剪辑师不用读完整歌词，也能直接知道截哪几行。
+
+主 hook 和尾钩必须有主次。商业传播型歌曲可以同时有标题 hook 和结尾态度句，但投喂控制里只能指定一个首要传播点，另一个作为回收或结尾补刀。若 `我不必无害 / 才值得被爱` 和 `那句不愿意 / 我实在不想改` 同时被写成同等主钩，短视频传播会分流，生成也会不知道哪个落点要最大。writer 要在声音方案里明确：主 hook 负责复唱和公共认领，尾钩负责 Final / Outro 的最后落拍。
+
+平台投喂稳定性优先于导演分镜精细度。正式 controlled lyrics 默认使用保守英文段落标签和短语，避免复杂中文竖线、过长段落说明和括号套括号。`[]` 里用 2-4 个英文短语控制段落能量；行级控制只在确实需要时使用，并优先采用单层括号或平台稳定格式。不要把每段的声场、配器、情绪和微表演都写进歌词框；这会让平台把控制词当歌词、旁白或无效 token。
+
+正式投喂稳定版优先不用圆括号行控。圆括号、括号套括号、`(main hook...)` 这类行内备注，在部分 AI 音乐平台会被误唱或当成无效 token。若只是要标记主 hook、尾钩、干落点和切片窗口，优先把信息写进段落标签、style prompt 或文件说明区，不放进可复制歌词框。只有经过平台验证确实支持圆括号控制时，才允许保留；否则正式投喂版默认删除所有圆括号行控。
+
+如果老胡明确说明当前生成平台已经验证支持 `[()]`、`[]` 等控制符号，并给出 style prompt / controlled lyrics 的字符上限，本轮必须切换到“质量优先精细控制”模式。此时不能继续套用通用平台的保守删减逻辑，但精细控制的主战场是乐段开头的 `[]` 段落控制，不是给每一句歌词都加 `[()]`。style prompt 在上限内写清主唱音色、音区、唱法、声场和 hook 保护；`[]` 写清整段的演唱情绪、节奏、气息、动态、空间、配器和和声进入；`[()]` 只给主 hook、入副歌前触发句、Bridge 翻面句、Final 尾钩、Outro 最后一口气等真正关键句使用，并且必须单独成行放在被控制歌词上一行。控制增加的前提是每一条都能改变生成结果，例如胸声、混声、头声尾音、气声颗粒、叹音、和声尾巴、短延迟、干收、弱起、停顿、尾韵承接；不能只是把“更有情绪、更高级、更细腻”这类抽象词塞进标签。
+
+质量优先仍然要防止“微操过载”。评审若连续指出 style prompt / controlled lyrics 像制作会议纪要、标签过长、目标分散、生成友好度不足，下一版必须执行降密：style prompt 只保留主声线、groove、核心乐器、人声距离、hook lift、Final 态度硬度和尾钩落点；删除平台不一定稳定执行的微操，例如精确 ducking 时机、具体秒数、过细元音说明、过多 delay / harmony / breath 细节。`[]` 段落标签每段优先 3-5 个核心动作，最多 6 个；同一标签里不要同时写声线、气口、配器、混响、和声、停顿、微表演七八项。控制目标是让平台先把主 hook、尾钩和女声距离唱稳。
+
+style prompt 的风格词要优先平台常见、可执行。内部可以用 `boundary-pop`、`glass turntable` 这类审美描述帮助理解，但正式投喂文本要改成平台更稳定的声音词，例如 `modern Mandarin urban pop ballad`、`tight piano ostinato`、`glassy pluck accents`、`rimshot groove`。不要把比喻型乐器描述直接写进 prompt，避免平台生成奇怪音效而不是情绪动机。
+
+Final 切片段要避免被平台误判成第二个完整副歌。若使用 `[Caption Hook]`、`[Viral Hook]`、`[Short Video Hook]` 等标签，部分平台可能把它当新段落扩写，导致高潮拉长。更稳的做法是在 `[Final Chorus]` 标签里注明 `ends with 12-sec hook`，或者使用 `[Final Hook]` 这种短尾标签，并让它明确作为 Final 的尾段，不再开一个独立新高潮。目标是让剪辑窗口干净，不是让平台生成两个副歌。
+
+短视频切片窗口不要执着精确秒数。`12-sec hook tail` 这类写法在说明区可以保留，但在正式投喂里可能让平台机械拖长或重复。正式 prompt / controlled lyrics 优先写 `short final hook tail`、`final hook tag`、`clean caption landing`、`dry final attitude line` 等可执行声音目标；需要给剪辑师看的 8-15 秒窗口写在文件说明或评审交接里，不强迫平台精确计算时长。
+
+行级控制宁可少而准，不要密而碎。常规商业流行歌在平台未知时，`[()]` 默认 3-5 处，硬上限仍为 7 处；如果评审或自检发现过控风险，下一版优先压到 3-4 处，只保留主 hook 首句、Final 尾钩、Outro 最后一口气和必要 Bridge 翻面。若老胡确认平台支持控制符号且 controlled lyrics 字符上限充足，可以突破通用硬上限，但仍必须保持层级：`[]` 承担 70% 以上控制信息，`[()]` 只承担少数关键句的聚光灯。Verse 通常只控入场钩子或关键物件，Pre 控入副歌前压力句，Chorus 控主 hook 和尾韵落点，Bridge 控翻面句，Final / Outro 控主 hook 回收和尾钩落拍。若每句歌词都有行级控制，听感会失去轻重，生成也容易机械化，判为过控。
+
+演唱技巧必须按歌曲类型选择，不是把技巧越堆越好。都市商业流行抒情歌优先使用胸声、轻混声、气声颗粒、叹音、头声尾音、低位和声、短延迟、干声近讲感和尾韵承接；戏腔、强花腔、过度转音、夸张哭腔、厚大合唱只在国风、戏剧化叙事、舞台型大歌或用户明确要求时使用。若技巧会把人物从“真实饭局里的当事人”推成“舞台表演者”，不得写入投喂文本。
+
+当主声线选择慵懒丝滑 R&B，但歌词核心是态度宣言、边界感、反规训或“不再配合”时，必须把主歌和副歌唱法分开：Verse / Pre 可以保留 close、breathy、restrained、silky phrasing；Chorus 从第一遍开始必须切换到 firmer commercial pop hook / square hook phrasing / forward chest-mix，不再延续 lazy phrasing。Final Hook 必须是 dry、short、front、attitude landing，不能继续用 soft slides、breathy、silky、lazy 这类词。判断标准：主 hook 第一遍就要像字幕金句站出来，而不是等 Final 才变硬。
+
+若副歌中段包含信息量较高的长句或具体动作句，且歌曲是 80-100 BPM 的 R&B-pop / urban pop ballad，必须防止挤唱和口播化。正式 controlled lyrics 可在 Chorus 段落标签中加入 `even phrasing`、`no rap squeeze`、`clear mid-chorus pacing`、`melodic mid-lines` 等少量控制；不要只强调 square hook，否则平台可能只唱稳第一句 hook，中段变成叙事挤字。
+
+Final Hook 和 Outro 必须分清主落点和余波。若 Final Hook 已经承担最干、最近、最清楚的态度落点，Outro 不要再次完整重复尾钩并回收主 hook，避免终点竞争。Outro 应降级为短回声、呼吸、钢琴尾音或一句主 hook 轻回收；需要让“我实在不想改”成为最终剪辑落点时，controlled lyrics 应在 Final Hook 标明 `main caption landing`，Outro 标明 `afterglow` 或 `short hook echo`。
+
+如果正式评审指出 `[Final Hook]` 仍可能被平台解析成第二个副歌、第二次高潮或新段落重启，下一版不得继续把尾钩单独列为独立 section。正确做法是把尾钩合并进 `[Final Chorus]`，在 Final Chorus 段落标签中写清 `final tag / dry caption landing / short phrase endings`，并让歌词自然从主 hook 走到最后态度句。判断标准：平台看到的是一个 Final Chorus 里的尾部落点，而不是 Final Chorus 后又启动一个新副歌。
+
+当短视频 / BGM / OST 评审指出主 hook 与尾钩仍在争夺最终传播焦点时，商业传播优先选择主 hook 作为最后字幕落点。尾钩可以保留，但职责必须降级为 Final Chorus 内部的补刀句、态度切口或转黑前一句，最后一口气回到歌名 hook 或主 hook。判断标准：剪辑师只看最后 8-15 秒时，最终记住的是标题级公共句，而不是只适用于当前剧情的窄尾句。
+
+当平台稳定性评审指出 Final Chorus 与 Outro 的收束重心仍可能分裂时，不能继续用“Final 先尾钩、Outro 再主 hook”的两段式落点。正确做法是把最终主 hook 回收并入 `[Final Chorus]` 内部，让 Final Chorus 自己完成“态度补刀 → 主 hook 回收”；Outro 只做 piano tail、breath out 或不写歌词。判断标准：可复制歌词框里最后一个有歌词的强落点只能有一个，不让平台在 Final Chorus 和 Outro 之间二选一。
+
+当商业制作评审指出副歌可能生成成“态度朗读”时，writer 不能靠增加更多解释性标签解决。应在 Chorus 段落标签中加入少量旋律执行词，例如 `rising hook melody / wider chorus topline / singable repeated hook / lift on title hook`，并删去过细或技术化的发音提示。目标是让平台优先生成可哼唱的 topline，而不是只把八句歌词清楚念完。
+
+若副歌文字密度高、动作句多，且评审仍担心朗读化，下一版必须把主 hook 与中段动作句分工写进 controlled lyrics：主 hook 用 `leave space / hold final vowel / melodic hook arc / gentle fall` 这类可唱动作；中段动作句用 `shorter phrases / light rhythmic lift / pass-through pacing`，让它们承担推进而不是抢旋律高点。尾钩若已被评审认为太像第二字幕，行级控制要把它唱小，例如 `low dry aside / softer chest voice / brief pause`，不得再用 front / strong / attitude tag 放大。
+
+若连续两轮以上评审都指出“副歌像态度朗读 / 第一耳 hook 不够凸起”，下一版必须从温柔旋律保护升级为前景 hook 保护：style prompt 明确 `front title hook / short pre-hook space / repeatable chorus hook / strong but clean lift`；controlled lyrics 在主 hook 前给 `half-beat space`，在主 hook 行给 `front hook, hold final word`，中段动作句只写 `lighter pass-through`。同时删除容易被平台误解的技术音素词，如 `ai vowel`，改成 `final word / hook ending / title hook` 等更稳定表达。
+
+若前景 hook 保护后仍卡在 92 左右，且评审已承认主 hook 位置、尾钩层级、Outro 稳定均成立，下一版不得继续增加微操。只能做两类低风险调整：一是把段落标签改成平台更稳的英文逗号格式；二是把 hook 控制压成更直接的 `hook pops first / clean lift / repeat title hook`。若仍未过线，应标记剩余问题可能来自歌词副歌信息密度或 hook 概念理解成本，而不是继续在演唱控制里空转。
+
+若商业制作评审明确点名需要“长音、级进、重复音型、留白”来避免副歌态度朗读，writer 可以做最后一轮旋律型控制加固：style prompt 加入 `stepwise chorus melody / repeated title motif / long notes on title hook`；主 hook 行控改为 `two-note motif / hold final word / clean lift`；中段仍保持轻推进。不得新增其他复杂演唱技巧，避免把控制再次堆满。
+
+Bridge 的控制要优先保护歌词清晰度。若 Bridge 已经靠歌词完成自省、翻面或关系回望，段落标签只保留 `stripped piano / close vocal / more silence / dry turn` 这类整体控制，默认不再给 Bridge 内部多句加 `[()]`。只有当某一句承担全曲唯一翻面句、且段落标签无法表达具体唱法时，才允许保留 1 处行级控制。Bridge 行控过多会让段落像制作提示会议纪要，削弱自然流动和歌词可听性。
+
+行级控制必须提供段落标签没有提供的新声学动作。若 `[Chorus]` 已经写了 `forward chest-mix / square hook / clear pacing`，下面的 `[(main hook, forward chest-mix)]` 就是重复控制，应删除或改成真正新增的动作，例如 `hold final vowel / dry landing / half-beat breath / harmony tail`。判断标准：删掉这条 `[()]` 后生成结果几乎不会损失，就说明它不是关键行控制。
+
+主 hook 尾韵要被声音方案显性保护。副歌主韵、尾钩尾字和可拖长尾音必须在 style prompt 或 controlled lyrics 中被明确保护，例如 `crisp ai vowel endings`、`dry landing on final hook`、`clear hook vowels`。只写 `clear consonants` 不够；商业传播句靠尾音被记住，尾音拖虚会削弱复唱和字幕落点。
 
 基础声音设计顺序：
 
@@ -69,11 +131,13 @@ controlled lyrics 不改歌词正文，只控制段落和关键行。
 
 ```text
 初稿 / 修改稿完成 → 交给 laohu_sing_control_repair 评审打分。
-repair 最终得分 > 90 → 才允许作为最终投喂结果。
-repair 最终得分 ≤ 90 → 必须按诊断单修改 style prompt 和 controlled lyrics，再交回 repair 复评。
+repair 最终得分 ≥ 93 → 才允许作为最终投喂结果。
+repair 最终得分 < 93 → 必须先确认诊断单包含演唱控制 writer 规则归因与写回卡，再按新增 / 修正规则和本轮临时执行规则修改 style prompt 与 controlled lyrics，并交回 repair 复评。
 ```
 
-每轮正式稿必须更新当前作品阶段文件 `05_演唱控制/文本/yyyy-mm-dd_最终style_prompt与演唱控制.md`。文件中保留当前 style prompt、controlled lyrics、repair 评分报告、核心缺点、writer 修改交接单和最终投喂字段。不得只在聊天里生成结果，也不得在未超过 90 分时包装成最终投喂版。
+每轮正式稿必须更新当前作品阶段文件 `05_演唱控制/文本/yyyy-mm-dd_最终style_prompt与演唱控制.md`。文件中保留当前 style prompt、controlled lyrics、repair 评分报告、核心缺点、writer 修改交接单和最终投喂字段。不得只在聊天里生成结果，也不得在未达到 93 分时包装成最终投喂版。
+
+阶段文件还必须保留“规则写回证据”和“writer 继承记录”：写明本轮新增 / 修正规则来自哪些评审缺点，实际写入了哪个文件或为什么只作为临时规则，writer 改稿前继承了哪些约束，改稿后 style prompt / controlled lyrics 哪些位置证明这些约束生效。
 
 ### 歌词声学交接硬门
 
@@ -187,12 +251,29 @@ controlled lyrics 是否过控，让标签遮住歌词？
 
 按诊断修改模式：
   继承的 repair 诊断摘要
+  继承的 writer 新增 / 修正规则
+  本轮临时执行规则
   修改后 style prompt
   修改后 controlled lyrics
   修改对应解决的评分短板
   修改后自检
   给 laohu_sing_control_repair 复评的交接字段
 ```
+
+正式评审打回演唱控制时，writer 不能只读“必须修”和“禁止路线”就动手。必须先读取诊断官给出的规则归因：评审官指出了哪些声音 / 生成问题，为什么旧 `laohu_sing_control_writer` 规则没有提前拦住，本轮新增 / 修正了哪些规则，哪些只是当前歌曲临时执行规则。若诊断单缺少这部分，先退回诊断官补齐，不能继续按旧规则重写。
+还必须检查诊断单是否包含规则写回证据：实际写入文件路径、当前作品临时规则位置、待验证原因和 writer 继承要求。若诊断单只有缺点和抽象规则，没有写回证据，先退回诊断官补齐；不得假装已经完成自我优化。
+
+演唱控制阶段的评审反馈也必须具象化成规则。sing_control_writer 不能只看到“声音不贴、情绪不够、标签太多、hook 没出来、段落不够推进”就直接改 prompt；诊断官必须先把它拆成可执行约束：
+
+```text
+触发条件：例如 style prompt 堆形容词、配器抢人声、Verse / Chorus 能量没有拉开、Bridge 没有翻面空间、Final Chorus 没有声场加重、controlled lyrics 标签过密、人声距离不符合歌词 POV。
+错误机制：它为什么会导致生成结果俗、平、吵、挡词、晚会化、模板化或唱不出歌词刀口。
+正确做法：应该调整人声距离、气息颗粒、段落动态、配器密度、hook 复唱、Bridge 留白、Final 声场或 controlled lyrics 标签粒度。
+禁止路线：不能靠堆更多高级标签、更多情绪词、更满编曲、更重混响、更复杂控制符来假装解决。
+自检问题：这条声音规则是否服务歌词主 hook；是否让主唱站在正确距离；是否给每个乐段留出该有的能量变化；是否会遮住歌词发音和尾音。
+```
+
+如果诊断单没有完成这些规则化字段，sing_control_writer 必须退回诊断官补齐，不得按旧 prompt 习惯重写。
 
 ### 产物优先输出硬门
 
@@ -275,6 +356,19 @@ controlled lyrics 是否过控，让标签遮住歌词？
 
 初稿 controlled lyrics 也必须是可投喂格式，不能只写自然语言说明。
 
+正式投喂版的标签格式优先保守。除非平台已验证支持复杂格式，否则默认使用：
+
+```text
+[Verse - close vocal, sparse piano]
+[Pre-Chorus - tighter pulse, short breath]
+[Chorus - vocal-forward hook, drums open]
+[Bridge - stripped piano, close vocal]
+[Final Chorus - full lift, hook up front]
+[Outro - sparse piano, dry final landing]
+```
+
+避免在正式投喂正文中使用过长中文说明、复杂分隔符和括号套括号。需要给老胡看的解释可以写在文件说明区，不能塞进可复制的 controlled lyrics。
+
 ### 纯 BGM / 短剧配乐控制硬门
 
 当用户要求 BGM、配乐、纯音乐、短剧背景音乐或 instrumental cue 时，本 skill 仍然必须交付“style prompt + controlled lyrics / Custom Lyrics”两栏结果。
@@ -343,14 +437,16 @@ clear sung phrase with dry ending
 
 1. 判断音乐任务、作品发动机和传播资产。
 2. 判断本轮演唱类型，只读取命中的类型化声音经验。
+   同时必须选择主声线类别：慵懒丝滑 R&B 系、松弛治愈系、复古未来人声、国风融合人声、质感沙哑 / 烟嗓，或明确的混合型。混合型只能写“一个主声线 + 一个辅助质感”，例如都市关系歌可用慵懒丝滑 R&B 为主、轻微沙哑颗粒为辅；不能把治愈清透、烟嗓、戏腔、声码器同时塞进同一首歌。
 3. 做歌手适配检查：声音身份是否匹配歌词站位、角色年龄、题材类型、使用场景和市场定位。AI 主唱也必须有虚拟歌手画像，不能只写通用 lead vocal。
 4. 检查歌词阶段的副歌唱感家族审计。如果只看到“某某韵辙”而没有拼音、韵母、声母启动、口型开闭、鼻音收束和长音承载，必须退回上游补齐；如果审计显示副歌主韵不稳，停止最终投喂链路。
 5. 生成初稿 style prompt：细分风格、BPM、groove、乐器、人声、空间、段落动态、hook 让位和正向边界。
    最终涉及人声的 prompt 必须明确人声身份，不允许只写 lead vocal。除非老胡明确要求模糊或中性，否则至少写清性别 / 年龄感、音区、音色、距离、唱法、咬字和动态，例如 mature male Mandarin vocal、late-30s low-mid baritone、slightly husky dry tone、close-mic、restrained chest voice、clear but unforced consonants。
+   人声参数必须来自主声线判断，而不是临时堆词。慵懒丝滑 R&B 写 breathy close-mic、silky phrasing、warm low-mid、slight husky grain；松弛治愈写 clean airy、translucent timbre、light vibrato、gentle phrase endings；复古未来写 subtle vocoder、tasteful Auto-Tune glaze、retro synth sheen；国风融合写 light operatic ornament、folk inflection、controlled melisma；质感烟嗓写 husky low-mid、smoky grain、controlled grit、chest resonance。
    内部可以判断模板漂移风险，但写给音乐平台的 style prompt 不得用 `No / Avoid / without / not / 不要 / 避免 / 禁止 / 不能 / 不得` 这类负向触发词。遇到“不要女声 / 不要大合唱 / 不要电影感膨胀”时，必须改成更窄的正向描述，例如 `mature male Mandarin baritone only`、`single forward dry lead`、`controlled low-mid lift`、`short dry phrase endings`。
 6. 生成初稿 controlled lyrics：保留歌词正文，不改词；段落用精简 `[]`，关键行用 `[()]`。
 7. 段落控制只写整体感觉和能量，不写长句解释；行级控制写具体唱法、气口、韵脚承接和和声动作。
-8. 初稿就要给核心 hook、转折句、暴露句、尾句必要控制，不能等评审后才第一次出现。
+8. 初稿就要给核心 hook、转折句、暴露句、尾句必要控制，不能等评审后才第一次出现。但若当前是商业传播型作品，先锁定一个首要切片窗口，再决定哪些行需要控制；不要让每个强句都抢同等控制权。
 9. `[()]` 推荐 3-6 处，硬上限 7 处；每条都必须包含 pause / breath / hold / duck / dry lead / no harmony / harmony tail / chest voice / head voice / falsetto / rise / fall / slide / rhyme handoff 等至少一个可执行声学动作。
    如果本轮是贴耳叙事、R&B 或自白型作品，宁可少控也不要连续控制同一组韵脚尾音；不要把中文尾字唱成技巧展示。
 10. 检查本轮是否为说唱或明确 rap delivery；如果不是，controlled lyrics 里不得出现 spoken / almost spoken / talk-sing / recitative / spoken-like，必须改成 melodic / sung / phrasing 类控制。
@@ -369,7 +465,7 @@ clear sung phrase with dry ending
 
 演唱控制符号说明：
 [] = 段落级控制，只控制当前乐段整体情绪节奏、编曲动态、人声距离、空间质感和能量状态；格式为 [Section ｜ phrase｜ phrase ｜ phrase]。
-[()] = 关键行控制，只控制下面紧跟的一句歌词；偏具体演唱技法和声音动作。
+[()] = 关键行控制，只控制下面紧跟的一句歌词；必须单独成行放在被控制歌词上一行；偏具体演唱技法和声音动作。
 
 初稿 style prompt：
 
@@ -397,6 +493,7 @@ clear sung phrase with dry ending
 - 如果歌词唱感家族不合格，是否已停止最终投喂链路并退回歌词优化。
 - 初稿 style prompt 是否明确人声身份：性别 / 年龄感、音区、音色、距离、唱法、咬字和动态是否具体。
 - 是否完成歌手适配检查：声音身份、年龄感、音区、音色、题材类型和使用场景是否一致。
+- 是否完成主声线类别判断，并且只保留一个主声线和最多一个辅助质感；有没有把 R&B、治愈、复古未来、国风、烟嗓等互相冲突的音色堆在一起。
 - 如果是广告、儿童、行业歌，是否保护记忆句、重复句和清晰咬字。
 - 如果是摇滚 / Rap，行级控制是否服务喊感、切分、重音和 punchline，而不是抒情慢歌控制。
 - 如果是现成曲填词，是否复查歌词重音、旋律重拍、长音尾字和倒字风险。

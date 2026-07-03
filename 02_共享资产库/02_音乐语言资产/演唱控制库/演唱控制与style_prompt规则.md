@@ -156,6 +156,70 @@ No / no / Avoid / avoid / without / not
 - 英文最终 prompt 推荐 650-900 字符，硬上限 900 字符；如果信息很多，优先保留风格、groove、乐器、人声、段落动态、hook 放大和空间。
 - 必须用正向边界防止 generic pop ballad、generic piano ballad、generic cinematic swell、宣传片式弦乐、晚会式合唱等模板漂移，例如明确细分风格、主唱身份、乐器密度、声场距离、hook 让位方式和段落能量曲线。
 
+## 2.2 主流商业音色音线选择库
+
+style prompt 里的人声音色不能只写“好听女声、温柔男声、有质感、沙哑、有故事感”。写人声前必须先判断歌词、人物、场景和商业使用场景适合哪一种主声线，再把类别拆成可执行参数。
+
+通用判断顺序：
+
+```text
+歌词场景 → 情绪强度 → 人物年龄/性格 → 商业使用场景 → 主声线类别 → 可执行人声参数
+```
+
+五类常用商业声线：
+
+```text
+1. 慵懒丝滑 R&B 系
+特征：气声饱满、转音丝滑、中低音醇厚、轻微颗粒感或沙哑、弱混声和气声结合。
+适配：都市情歌、暧昧/拉扯、夜晚车载、睡前 BGM、氛围短片、轻 R&B groove。
+prompt 参数：breathy close-mic vocal, silky R&B phrasing, warm low-mid tone, slight husky grain, soft slides, restrained chest-mix, smooth adlibs。
+风险：不要过度转音、不要把中文尾字唱成炫技；主 hook 要清楚，转音只能做装饰。
+
+2. 松弛治愈系
+特征：干净通透、轻颤音、气声主导、低饱和度情绪、轻拿轻放的力度。
+适配：治愈 vlog、情绪短片、通勤/助眠歌单、轻民谣、清新 City Pop、低冲突自白。
+prompt 参数：clean airy vocal, translucent timbre, soft breath-led delivery, light vibrato, gentle phrase endings, low-saturation emotion, intimate dry room。
+风险：不要用在强冲突、强态度、复仇、宣言型歌词上，否则会削弱立场。
+
+3. 复古未来人声
+特征：80s/90s 复古质感叠加现代电子处理，轻微失真、声码器、艺术化 Auto-Tune、合成器空间。
+适配：Neo City Pop、Synthwave、赛博/复古潮流、视觉化短片、未来感都市叙事。
+prompt 参数：retro-futurist vocal processing, subtle vocoder layer, tasteful Auto-Tune glaze, 80s synth sheen, digital clarity with warm analog texture。
+风险：不要用于需要真实近景关系痛感的歌词；电子处理过多会把人物推远。
+
+4. 国风融合人声
+特征：戏腔/民族唱腔与流行咬字融合，气声加戏曲拖腔，传统乐器衬底。
+适配：古风短视频、文化 IP、国风舞台、历史/神话/东方视觉题材。
+prompt 参数：Mandarin pop vocal with light operatic ornament, folk inflection, controlled melisma, traditional instrument bed, graceful phrase tail。
+风险：都市现实题材、饭局/职场/亲密关系写实题材默认不使用；戏腔会把现实人物推向舞台表演。
+
+5. 质感沙哑 / 烟嗓
+特征：中低音沙哑、颗粒感强、力量感与沧桑感并存，常带流行摇滚、布鲁斯或民谣质地。
+适配：故事感、励志、情感宣泄、成年人伤口、强记忆叙事、低音区男声或成熟女声。
+prompt 参数：husky low-mid vocal, smoky grain, raspy edge, chest resonance, controlled grit, dry intimate lead, worn but clear diction。
+风险：不要让沙哑盖住咬字；年轻、清透、治愈型歌词不要强行烟嗓。
+```
+
+商业趋势判断：
+
+```text
+情绪优先：先让听众相信这个人在唱自己的事，再考虑炫技。
+复古回潮：City Pop、Synthwave、Funk、R&B 可以叠加现代清晰瞬态，但不能只堆年代标签。
+融合为王：R&B+说唱、复古+未来、国风+电子都可以用，但必须由歌词题材和画面决定，不为潮流硬混。
+短视频适配：音色要抓耳、节奏要清楚、hook 要在 15 秒内被记住。
+质感升级：目标是“真实感 + 精致度”，可以写 analog warmth / digital clarity，但不能变成制作炫耀。
+```
+
+写 style prompt 时必须明确主辅关系：
+
+```text
+主声线：这首歌主要靠哪一类人声被记住。
+辅助质感：最多叠加一类辅助音色，例如 R&B 主声线 + 轻微烟嗓颗粒。
+禁用方向：内部说明可以写哪些声线不适合，但最终投喂 prompt 仍然只写正向目标。
+```
+
+如果一首歌同时写入三种以上互相冲突的音线，例如清透治愈、强烟嗓、戏腔、声码器一起出现，判为声线失焦。优先删到“一个主声线 + 一个辅助质感”。
+
 ## 3. 纯音乐骨架升级为最终人声版本
 
 如果前一步是纯音乐 style prompt，最终阶段不能推翻它。
@@ -255,7 +319,7 @@ line-level 控制只用于：
 强控制：同时写出唱法、气口、韵脚或和声动作，例如 [(half-beat breath, chest mix, hold "年", low harmony answers)]。
 ```
 
-`[()]` 不是越多越好，但关键句不能没有技法控制。副歌第一句、主 hook 落点、Bridge 翻面句、Final Chorus 情绪转向句至少要有 1 处有效或强控制。
+`[()]` 不是越多越好，但关键句不能没有技法控制。副歌第一句、主 hook 落点、Final Chorus 情绪转向句优先保留有效或强控制。Bridge 是否使用行控，要看歌词是否已经靠段落本身完成翻面；如果 Bridge 的歌词已经清楚，默认只保留段落级控制。
 
 每个 `[()]` 必须至少包含一个可执行声学动作：
 
@@ -268,6 +332,26 @@ reduce instruments / leave space / low harmony answers
 ```
 
 只有情绪形容词、态度说明或抽象表达的 `[()]` 判为弱控制，不能进入终稿。
+
+重复段落标签的 `[()]` 也不能进入终稿。段落标签已经承担了整段的唱法、距离和动态，行级控制必须再增加一个更具体的动作，例如拖哪个尾音、哪里干收、哪里半拍呼吸、哪里低和声回应。若行控只是把段落标签换一种说法重复一遍，它会增加平台解析负担，却不会让关键句更好唱。
+
+Bridge 默认少行控。Bridge 的任务通常是自省、翻面、留白和关系回看，声音上最需要的是空间让出来、人声靠近和乐器减法。除非某一句是全曲唯一翻面句，否则 Bridge 用一个精简段落标签即可，不连续添加多个 `[()]`。
+
+Final 尾钩如果只是 Final Chorus 的最后落点，不要另开像新副歌的独立 section。更稳的写法是把 `final tag / dry caption landing / short phrase endings` 写入 `[Final Chorus]` 段落标签，让最后几句自然完成落点。只有极短回声或一句余波，才适合放在独立 `[Outro]` 或短尾段里。
+
+商业传播优先时，主 hook 与尾钩不能都当最后字幕落点。主 hook 是标题级公共句，负责观众复唱、评论区引用和广泛转发；尾钩是剧情内态度句，负责补刀、转黑和情绪定格。若评审指出两者分流，下一版要让尾钩退到 Final Chorus 中段或倒数第二层，最后一口回到主 hook。只有当尾钩本身比主 hook 更公共、更好记、更适合歌名传播时，才允许尾钩做最终落点。
+
+最终主 hook 不要拆到 Outro 才回收。若 Final Chorus 已经进入最强能量，最终主 hook 应在 Final Chorus 内部完成回收；Outro 只做无歌词余波、钢琴尾音、呼吸或一句很轻的回声。平台投喂里，有歌词 Outro 容易被理解成第二个落点，尤其当前面刚有强尾钩时，会削弱最终 15 秒的结构稳定性。
+
+商业副歌要显性写“旋律钩子”，不能只写“清楚咬字”。当副歌句子信息密、动作多、态度强时，段落标签要给平台一个旋律任务，例如 `rising hook melody`、`wider chorus topline`、`singable title hook`、`repeatable main hook`。这些词的目的不是增加文案，而是防止副歌生成成态度朗读或口号平铺。
+
+副歌文字密度高时，还要分清“主旋律句”和“推进句”。主 hook 要留白、拖尾音、回落或形成旋律弧线；中段动作句要更短促、更轻、更像经过，不要和主 hook 用同等力度抢高点。尾钩如果已经足够锋利，演唱控制要把它处理成低位补刀，而不是再用强声、前景和态度标签把它推成第二主 hook。
+
+当同一首歌连续被评审指出“第一耳 hook 不够凸起”，说明温柔的旋律保护不够，应升级为前景 hook 保护。执行上用更稳定的声音动作：主 hook 前留半拍、主 hook 前景、尾词可拖、标题 hook 可重复；少用技术音素词如 `ai vowel`，优先写 `final word`、`hook ending`、`title hook`，避免平台误解析。
+
+当前景 hook 保护后仍稳定卡在临界分，说明声音控制可能已经接近边界。此时优先做格式稳健化，例如英文逗号标签、减少全角分隔符、删除多余形容；不要继续堆新的唱法词。若仍无法过线，应退回歌词或曲式判断副歌信息密度、hook 概念理解成本、旋律空间是否本身限制商业传播。
+
+最后一层可尝试的副歌旋律保险，是把主 hook 从“前景”进一步具体成可生成的旋律结构：级进旋律、重复标题动机、标题句长音、主 hook 前留白。它只适用于评审已经明确指出“长音、级进、重复音型、留白”的情况；不能作为所有歌曲的默认堆料。
 
 ### 5.1 非说唱歌曲不要用 spoken 控制
 
@@ -457,6 +541,59 @@ close-mic male-female duet, verses alternate lead vocals, choruses gentle unison
 4. Final Chorus 是否被推成大合唱？
 5. 封面人物年龄是否匹配合唱声音年龄？
 ```
+
+### 9.2 国风宿命怨诉慢歌的清冷女声控制
+
+国风宿命怨诉慢歌的声音重点不是炫戏腔，而是让听众相信：这个人先忍着，后来忍不住质问，最后只剩一点卑微求告。人声和编曲必须共同完成“隐忍 → 推起 → 爆发 → 求告 → 留白”的动态。
+
+适用：
+
+- 古风 / 国风情爱。
+- 明月、长夜、寒江、宿命、轮回等不可得对象承载情绪。
+- 慢板孤寂、怨怼、求而不得、命运感。
+
+推荐 style prompt 参数：
+
+```text
+Chinese ancient style Mandopop ballad, 72-76 BPM, minor key, melancholic, lonely, cold, fate-driven, cinematic but intimate.
+Instrumentation: guzheng harmonics or light arpeggio, breathy bamboo flute long notes, sparse piano single notes, cello long lines, gradual string ensemble swells, subtle pipa tremolo, restrained Chinese bass drum accents only in chorus and bridge.
+Vocal: mature female Mandarin vocal, cold smoky low-mid timbre, slight husky grain, breath-led verse, clear diction, chest resonance, controlled chest-mix chorus, slow sorrowful vibrato, minimal melisma, tearful bridge, vocal forward, wide reverb space.
+Dynamics: sparse cold verse, rising pre-chorus, powerful but clear chorus, most intense bridge, whispered fading outro.
+```
+
+段落控制参考：
+
+```text
+[Verse 1 ｜ breath-led low register｜ close cold vocal ｜ sparse guzheng and flute]
+[Pre-Chorus ｜ diction firms up｜ strings slowly rise ｜ restrained tension]
+[Chorus ｜ chest-mix release｜ vocal forward ｜ wide reverb ｜ clear hook]
+[Bridge ｜ tearful peak｜ controlled grit ｜ strings full swell ｜ pleading turn]
+[Final Chorus ｜ powerful return｜ harmony tail after hook ｜ drum accents restrained]
+[Outro ｜ breathy whisper｜ instruments fall away ｜ long reverb tail]
+```
+
+关键行控制参考：
+
+```text
+[(half-beat breath, clear consonants, slight chest resonance)]
+副歌第一句质问
+
+[(chest mix, hold open vowel, slow vibrato, no harmony over hook word)]
+副歌核心句
+
+[(tearful chest voice, slight pitch break, instruments duck before final word)]
+Bridge 从恨转求的句子
+
+[(near-whisper, breathy tail-off, leave silence after final word)]
+尾句单词或短句
+```
+
+风险：
+
+- 戏腔 / 民族拖腔只能轻点缀，不默认全曲使用。这个类型的痛感来自清冷烟嗓、气声到强混的动态，不来自花腔表演。
+- 哭腔要艺术化控制，只在副歌后半或 Bridge 关键句明显；全段都哭会显廉价。
+- 大混响不能淹没字头，副歌质问句必须人声前置、咬字清楚。
+- 大鼓和弦乐只服务高潮，不要把孤寂怨诉推成家国战歌或晚会大歌。
 
 ## 10. Controlled Lyrics 格式
 
