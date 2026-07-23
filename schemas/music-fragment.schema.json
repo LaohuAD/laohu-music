@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/music-fragment.schema.json",
+  "title": "Laohu Music V3 Music Fragment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fragment_id",
+    "work_id",
+    "branch",
+    "kind",
+    "representation",
+    "context_role",
+    "authority",
+    "locked_dimensions",
+    "open_dimensions"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "fragment_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "work_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "branch": { "enum": ["vocal_song", "instrumental"] },
+    "kind": { "enum": ["melody", "rhythm_cell", "groove", "riff", "harmony", "motif", "vocal_action", "arrangement"] },
+    "representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "content"],
+      "properties": {
+        "format": { "enum": ["description", "scale_degrees", "interval_contour", "rhythm_grid", "chord_functions", "roman_numerals", "section_map"] },
+        "content": { "type": "string", "minLength": 1 },
+        "time_basis": { "type": ["string", "null"] }
+      }
+    },
+    "context_role": { "type": "string", "minLength": 1 },
+    "authority": { "enum": ["user_locked", "user_editable", "system_candidate"] },
+    "locked_dimensions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/dimension" }
+    },
+    "open_dimensions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/dimension" }
+    },
+    "linked_lyrics_ref": { "type": ["string", "null"] },
+    "notes": { "type": ["string", "null"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "melody" } }, "required": ["kind"] },
+      "then": { "properties": { "representation": { "properties": { "format": { "enum": ["description", "scale_degrees", "interval_contour"] } } } } }
+    },
+    {
+      "if": { "properties": { "kind": { "enum": ["rhythm_cell", "groove"] } }, "required": ["kind"] },
+      "then": { "properties": { "representation": { "properties": { "format": { "enum": ["description", "rhythm_grid"] } } } } }
+    },
+    {
+      "if": { "properties": { "kind": { "enum": ["riff", "motif"] } }, "required": ["kind"] },
+      "then": { "properties": { "representation": { "properties": { "format": { "enum": ["description", "scale_degrees", "interval_contour", "rhythm_grid"] } } } } }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "harmony" } }, "required": ["kind"] },
+      "then": { "properties": { "representation": { "properties": { "format": { "enum": ["description", "chord_functions", "roman_numerals"] } } } } }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "vocal_action" } }, "required": ["kind"] },
+      "then": { "properties": { "representation": { "properties": { "format": { "enum": ["description", "scale_degrees", "interval_contour", "rhythm_grid"] } } } } }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "arrangement" } }, "required": ["kind"] },
+      "then": { "properties": { "representation": { "properties": { "format": { "enum": ["description", "section_map"] } } } } }
+    },
+    {
+      "if": { "properties": { "branch": { "const": "instrumental" } }, "required": ["branch"] },
+      "then": {
+        "not": {
+          "anyOf": [
+            { "properties": { "kind": { "const": "vocal_action" } }, "required": ["kind"] },
+            { "properties": { "locked_dimensions": { "contains": { "enum": ["lyrics", "vocal_action"] } } }, "required": ["locked_dimensions"] },
+            { "properties": { "open_dimensions": { "contains": { "enum": ["lyrics", "vocal_action"] } } }, "required": ["open_dimensions"] }
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "dimension": {
+      "enum": ["pitch", "rhythm", "harmony", "groove", "timbre", "form", "lyrics", "vocal_action"]
+    }
+  }
+}

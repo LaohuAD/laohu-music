@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/prompt-revision.schema.json",
+  "title": "Laohu Music V3 Sound Prompt Revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "prompt_revision_id",
+    "work_id",
+    "parent_prompt_revision_id",
+    "origin",
+    "prompt_package_sha256",
+    "source_audio_run_ids",
+    "source_feedback_event_ids",
+    "preserved_assets",
+    "modification_group",
+    "expected_observable_changes",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "prompt_revision_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "work_id": { "type": "string", "minLength": 1 },
+    "parent_prompt_revision_id": { "type": ["string", "null"] },
+    "origin": {
+      "enum": ["initial_generation", "imported_package", "external_feedback", "manual_revision", "rollback"]
+    },
+    "prompt_package_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_audio_run_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" }
+    },
+    "source_feedback_event_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" }
+    },
+    "preserved_assets": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "modification_group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_fields", "changes", "reason"],
+      "properties": {
+        "target_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "changes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "expected_observable_changes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "status": { "enum": ["current", "superseded", "accepted", "rolled_back"] },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/memory-record.schema.json",
+  "title": "Laohu Music V3 Memory Record",
+  "oneOf": [
+    { "$ref": "#/$defs/systemMeta" },
+    { "$ref": "#/$defs/preferenceEvidence" },
+    { "$ref": "#/$defs/rootCauseLearning" },
+    { "$ref": "#/$defs/externalResultEvidence" }
+  ],
+  "$defs": {
+    "base": {
+      "type": "object",
+      "required": ["schema_version", "record_id", "record_type", "owner_id", "status", "created_at"],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "record_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+        "record_type": { "type": "string" },
+        "owner_id": { "type": "string", "minLength": 1 },
+        "work_id": { "type": ["string", "null"] },
+        "status": { "enum": ["observed", "candidate", "validated", "active", "deprecated"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "evidence_ids": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "systemMeta": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["message"],
+          "properties": {
+            "schema_version": true,
+            "record_id": true,
+            "record_type": { "const": "system_meta" },
+            "owner_id": true,
+            "work_id": true,
+            "status": true,
+            "created_at": true,
+            "evidence_ids": true,
+            "message": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+    "preferenceEvidence": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dimension", "context", "selected", "rejected", "reason", "confidence", "ask_when"],
+          "properties": {
+            "schema_version": true,
+            "record_id": true,
+            "record_type": { "const": "preference_evidence" },
+            "owner_id": true,
+            "work_id": true,
+            "status": true,
+            "created_at": true,
+            "evidence_ids": true,
+            "dimension": { "type": "string", "minLength": 1 },
+            "context": { "type": "object" },
+            "selected": { "type": "string", "minLength": 1 },
+            "rejected": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "reason": { "type": "string", "minLength": 1 },
+            "confidence": { "enum": ["low", "medium", "high"] },
+            "conflicting_evidence_ids": { "type": "array", "items": { "type": "string" } },
+            "ask_when": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      ]
+    },
+    "rootCauseLearning": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "surface_symptom",
+            "user_feedback",
+            "root_layer",
+            "causal_chain",
+            "upstream_principle",
+            "corrective_decision",
+            "positive_evidence",
+            "negative_evidence",
+            "boundary",
+            "counterexample",
+            "validation"
+          ],
+          "properties": {
+            "schema_version": true,
+            "record_id": true,
+            "record_type": { "const": "root_cause_learning" },
+            "owner_id": true,
+            "work_id": true,
+            "status": true,
+            "created_at": true,
+            "evidence_ids": true,
+            "surface_symptom": { "type": "string", "minLength": 1 },
+            "user_feedback": { "type": "string", "minLength": 1 },
+            "root_layer": { "enum": ["proposition", "knowledge_boundary", "observation", "language_engine", "form", "section", "line", "word", "sound", "platform", "project_process"] },
+            "causal_chain": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+            "upstream_principle": { "type": "string", "minLength": 1 },
+            "corrective_decision": { "type": "string", "minLength": 1 },
+            "positive_evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "negative_evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "boundary": { "type": "string", "minLength": 1 },
+            "counterexample": { "type": "string", "minLength": 1 },
+            "validation": { "type": "object" }
+          }
+        }
+      ]
+    },
+    "externalResultEvidence": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_type", "result_path", "observation", "attribution"],
+          "properties": {
+            "schema_version": true,
+            "record_id": true,
+            "record_type": { "const": "external_result_evidence" },
+            "owner_id": true,
+            "work_id": true,
+            "status": true,
+            "created_at": true,
+            "evidence_ids": true,
+            "artifact_type": { "enum": ["audio", "listener_feedback", "publication_result"] },
+            "result_path": { "type": "string", "minLength": 1 },
+            "observation": { "type": "string", "minLength": 1 },
+            "attribution": { "enum": ["prompt", "platform", "lyrics", "vocal_range", "personal_preference", "unknown"] }
+          }
+        }
+      ]
+    }
+  }
+}

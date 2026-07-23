@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/work-state.schema.json",
+  "title": "Laohu Music V3 Work State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "work_id",
+    "owner_id",
+    "stage",
+    "mode",
+    "locked",
+    "open_decisions",
+    "artifacts",
+    "next_action",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "work_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "owner_id": { "type": "string", "minLength": 1 },
+    "title": { "type": ["string", "null"] },
+    "work_type": {
+      "enum": ["vocal_song", "instrumental"],
+      "description": "New works must set this explicitly; absence is treated as legacy vocal_song."
+    },
+    "mode": {
+      "enum": ["director_co_creation", "quick_draft", "studio_experiment"]
+    },
+    "stage": {
+      "enum": [
+        "briefing",
+        "proposition_choice",
+        "hook_development",
+        "form_choice",
+        "draft_generation",
+        "section_revision",
+        "line_revision",
+        "lyrics_locked",
+        "sound_choice",
+        "sound_package_ready",
+        "external_audio_review",
+        "complete",
+        "paused"
+      ]
+    },
+    "active_scope": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "section_id": { "type": ["string", "null"] },
+        "line_id": { "type": ["string", "null"] },
+        "fragment_id": { "type": ["string", "null"] },
+        "field": { "type": ["string", "null"] },
+        "allowed_change": {
+          "enum": ["whole_work", "section", "line", "word", "music_fragment", "sound_package", "none"]
+        }
+      },
+      "required": ["allowed_change"]
+    },
+    "locked": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "user_facts",
+        "unknown_facts",
+        "proposition_id",
+        "core_hook_lines",
+        "form_id",
+        "lyrics_locked",
+        "sound_direction_id"
+      ],
+      "properties": {
+        "user_facts": { "type": "array", "items": { "type": "string" } },
+        "unknown_facts": { "type": "array", "items": { "type": "string" } },
+        "proposition_id": { "type": ["string", "null"] },
+        "core_hook_lines": { "type": "array", "items": { "type": "string" }, "maxItems": 2 },
+        "form_id": { "type": ["string", "null"] },
+        "lyrics_locked": { "type": "boolean" },
+        "sound_direction_id": { "type": ["string", "null"] }
+      }
+    },
+    "open_decisions": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+      "uniqueItems": true
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work", "events", "audio_dir"],
+      "properties": {
+        "work": { "type": "string" },
+        "events": { "type": "string" },
+        "audio_dir": { "type": "string" }
+      }
+    },
+    "loaded_memory_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "sound_iteration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_prompt_revision_id",
+        "accepted_prompt_revision_id",
+        "feedback_cycle_count",
+        "pending_audio_run_ids",
+        "latest_feedback_event_id",
+        "awaiting"
+      ],
+      "properties": {
+        "current_prompt_revision_id": { "type": ["string", "null"] },
+        "accepted_prompt_revision_id": { "type": ["string", "null"] },
+        "feedback_cycle_count": { "type": "integer", "minimum": 0 },
+        "pending_audio_run_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" }
+        },
+        "latest_feedback_event_id": { "type": ["string", "null"] },
+        "awaiting": {
+          "enum": ["external_generation", "external_feedback", "prompt_revision", "user_acceptance", "none"]
+        }
+      }
+    },
+    "next_action": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["skill", "mode", "reason"],
+          "properties": {
+            "skill": {
+              "enum": ["laohu_music", "laohu_lyrics", "laohu_sound", "laohu_learning"]
+            },
+            "mode": { "type": "string", "minLength": 1 },
+            "reason": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

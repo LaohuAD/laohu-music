@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/decision.schema.json",
+  "title": "Laohu Music V3 Human Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "work_id",
+    "stage",
+    "scope",
+    "question",
+    "evidence",
+    "options",
+    "recommended_option_id",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "decision_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "work_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "stage": { "type": "string", "minLength": 1 },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level"],
+      "properties": {
+        "level": { "enum": ["work", "proposition", "hook", "form", "section", "line", "word", "music_fragment", "sound"] },
+        "section_id": { "type": ["string", "null"] },
+        "line_id": { "type": ["string", "null"] },
+        "fragment_id": { "type": ["string", "null"] }
+      }
+    },
+    "question": { "type": "string", "minLength": 1 },
+    "why_now": { "type": "string" },
+    "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["option_id", "content", "changes", "preserves", "tradeoff"],
+        "properties": {
+          "option_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+          "content": { "type": "string", "minLength": 1 },
+          "changes": { "type": "string", "minLength": 1 },
+          "preserves": { "type": "string", "minLength": 1 },
+          "tradeoff": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "recommended_option_id": { "type": ["string", "null"] },
+    "recommendation_reason": { "type": ["string", "null"] },
+    "status": { "enum": ["awaiting_user", "selected", "keep_original", "rejected_all", "cancelled"] },
+    "selected_option_id": { "type": ["string", "null"] },
+    "user_reason": { "type": ["string", "null"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "resolved_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

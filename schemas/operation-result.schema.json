@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/operation-result.schema.json",
+  "title": "Laohu Music V3 Operation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "operation", "status", "work_id", "messages", "artifact_paths"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "request_id": { "type": "string", "minLength": 1 },
+    "operation": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["completed", "needs_user_decision", "needs_clarification", "blocked", "failed"] },
+    "work_id": { "type": ["string", "null"] },
+    "stage": { "type": ["string", "null"] },
+    "state_path": { "type": ["string", "null"] },
+    "decision_path": { "type": ["string", "null"] },
+    "artifact_paths": { "type": "array", "items": { "type": "string" } },
+    "messages": { "type": "array", "items": { "type": "string" } },
+    "error": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": { "type": "string", "minLength": 1 },
+            "message": { "type": "string", "minLength": 1 },
+            "recoverable": { "type": "boolean" }
+          }
+        }
+      ]
+    }
+  }
+}

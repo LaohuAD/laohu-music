@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/audio-run.schema.json",
+  "title": "Laohu Music V3 External Audio Run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "audio_run_id",
+    "work_id",
+    "prompt_revision_id",
+    "platform",
+    "generated_at",
+    "status",
+    "feedback_status"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "audio_run_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "work_id": { "type": "string", "minLength": 1 },
+    "prompt_revision_id": { "type": "string", "minLength": 1 },
+    "platform": { "type": "string", "minLength": 1 },
+    "model": { "type": ["string", "null"] },
+    "seed": { "type": ["string", "number", "null"] },
+    "audio_path": { "type": ["string", "null"] },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["registered", "available", "missing", "discarded"] },
+    "feedback_status": { "enum": ["pending", "received", "incorporated", "not_needed"] },
+    "technical_analysis": {
+      "type": ["object", "null"],
+      "description": "Optional tool-derived metadata; never substitutes for user listening feedback."
+    },
+    "notes": { "type": ["string", "null"] }
+  }
+}

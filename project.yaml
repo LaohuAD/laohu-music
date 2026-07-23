@@ -1,0 +1,24 @@
+schema_version: 1
+project_id: laohu-music-v3
+name: 老胡音乐 V3
+product_phase: local_first
+interface_contract_version: 1
+default_owner_id: local_default
+current_work_id: null
+entry_skill: skills/laohu_music/SKILL.md
+profile_path: memory/profile.yaml
+memory_records_path: memory/records.jsonl
+work_root: works
+authority:
+  procedures: skills
+  universal_knowledge: knowledge
+  personal_memory: memory
+  work_state: works
+future_adapters:
+  - codex
+  - claude_code
+  - web_optional
+audio_analysis:
+  default_mode: user_text_only
+  optional_tool_assistance: true
+  capability_must_be_disclosed: true

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laohu.local/music-v3/work-event.schema.json",
+  "title": "Laohu Music V3 Work Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_type", "owner_id", "work_id", "stage", "actor", "occurred_at", "payload"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "event_id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "event_type": {
+      "enum": [
+        "work_created",
+        "state_transition",
+        "decision_opened",
+        "decision_resolved",
+        "artifact_updated",
+        "lyrics_locked",
+        "lyrics_reopened",
+        "sound_direction_locked",
+        "sound_package_generated",
+        "prompt_revision_created",
+        "music_fragment_registered",
+        "music_fragment_refined",
+        "audio_run_registered",
+        "external_feedback_received",
+        "external_feedback_incorporated",
+        "sound_package_accepted",
+        "learning_recorded",
+        "validation_completed",
+        "work_paused",
+        "work_completed"
+      ]
+    },
+    "owner_id": { "type": "string", "minLength": 1 },
+    "work_id": { "type": "string", "minLength": 1 },
+    "stage": { "type": "string", "minLength": 1 },
+    "actor": { "enum": ["user", "agent", "system", "external_platform"] },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "request_id": { "type": ["string", "null"] },
+    "decision_id": { "type": ["string", "null"] },
+    "payload": { "type": "object" }
+  }
+}
