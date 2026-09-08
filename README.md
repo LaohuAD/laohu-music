@@ -43,6 +43,20 @@ V4 不是旧版目录的简单扩容，而是一次重新组织：`.agents/skill
 
 一种常见组合是：先在老胡音乐 V4 里完成歌曲命题、歌词和声音方案，再用无限画布调用模型、管理生成结果；需要 MV、歌曲封面或视觉叙事时，进入老胡 AI 视觉建立资产、镜头与成片方案。三个项目不是彼此的必装依赖，真正共享的是同一套原则：作品判断先于工具调用，真实结果继续反哺下一次创作。
 
+## 主页、教程与更多项目
+
+老胡的统一入口：[个人主页](https://lao-hu.com) · [教程与资料](https://lao-hu.com/learn/) · [全部开源项目](https://lao-hu.com/projects/) · [公众号与联系方式](https://lao-hu.com/#contact) · [模型小屋](https://api.lao-hu.com)。
+
+教程入口汇总文字资料和配套视频；公众号入口可在主页查看。模型小屋是独立的模型服务，不是使用这些开源项目的必购项，具体接入与费用以各项目说明和服务页面为准。
+
+相关项目还有：
+
+| 项目 | 适合什么时候使用 |
+| --- | --- |
+| [老胡的审美起源](https://github.com/LaohuAD/laohu-taste-genesis) | 希望把自己的判断和反馈整理成专业 Agent 能力时 |
+| [CapMotion](https://github.com/LaohuAD/laohu-CapMotion) | 需要录屏、口播剪辑、字幕与讲解动画时 |
+| [Luna 音乐创作体系](https://github.com/LaohuAD/luna-music-creative-system) | 查阅 AI 音乐创作方法资料时 |
+
 ## 适合谁
 
 - 想用 AI 辅助写歌，但不想只得到一版随机歌词的人。
@@ -182,8 +196,8 @@ laohu-music/
 
 本仓库采用分层授权：
 
-- 代码、脚本和可执行辅助文件：Apache License 2.0。
-- 文档、创作方法、提示词、模板、评审标准、Skill 与知识资产：CC BY-NC-SA 4.0，仅限非商业使用并要求相同方式共享。
+- **代码：MIT License**，包括脚本和 Skill 内的可执行辅助代码。
+- **规则、Skill、提示词、文档和案例：CC BY-SA 4.0**，允许商用，须署名、标注修改并遵守相同方式共享要求。
 - 老胡个人品牌资产、账号素材和宣传图片：保留所有权利。
 
 详细条款见 [LICENSE.md](LICENSE.md)。

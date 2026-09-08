@@ -1,83 +1,36 @@
-# License
+# 分层授权
 
-This repository uses a mixed license model.
+自 2026-09-08 起，老胡（LaohuAD）拥有版权且有权独立授权的本项目材料按类型授权：
 
-本仓库采用分层授权。不同类型的内容适用不同规则。
+- **代码：MIT License**。包括原创脚本和 Skill 内的可执行辅助代码；MIT 正文见下方。
+- **规则、Skill、提示词、文档和案例：CC BY-SA 4.0**。包括原创 Markdown、工作流说明、方法、模板与评审标准；完整正文见 [LICENSE-CONTENT](LICENSE-CONTENT)。
 
-## 1. Code And Scripts
+内容许可允许分享、改编及商业使用；须适当署名、提供许可链接并标注修改，分发改编内容须遵守相同方式共享要求。代码与内容的适用范围按实际性质区分，不因代码放在 Skill 目录中就自动变成内容许可。
 
-The code, shell scripts, and executable skill helper files in this repository are licensed under the Apache License 2.0.
+第三方代码、外部 Skill、引用作品及其他明确标注来源或许可的材料仍遵守原许可；本声明不撤销既有版本已经授予的有效许可。个人头像、账号二维码、品牌标识等非本次代码和文档授权范围的独立资产保留原有边界，商标、肖像和隐私权不因本声明获授权。
 
-适用范围包括但不限于：
+署名建议：老胡（LaohuAD），附本项目原始 GitHub 地址、许可链接及修改说明。不应暗示作者为使用者或其产品背书。
 
-- `.agents/skills/**/scripts/`
-- 可执行脚本
-- 用于检查、创建目录、安装或运行流程的代码文件
+## 代码许可正文
 
-You may use, modify, and distribute these code files under the terms of the Apache License 2.0:
+MIT License
 
-https://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) 2026 LaohuAD
 
-SPDX-License-Identifier: Apache-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## 2. Documentation, Rules, And Creative System Content
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-The documentation, workflow descriptions, creative rules, music creation methods, rubrics, prompts, templates, and Markdown knowledge assets are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
-
-适用范围包括但不限于：
-
-- `README.md`
-- `AGENTS.md`
-- `.agents/references/**/*.md`
-- `.agents/skills/**/SKILL.md`
-- `作品/README.md`
-- 歌词创作规则、题眼方法、韵脚规则、曲式流程、质量评估规则、复盘协议等方法论内容
-
-You may share and adapt these materials for non-commercial purposes, as long as you give appropriate credit and distribute adaptations under the same license.
-
-License:
-
-https://creativecommons.org/licenses/by-nc-sa/4.0/
-
-SPDX-License-Identifier: CC-BY-NC-SA-4.0
-
-## 3. Brand Assets And Personal Images
-
-All personal brand assets are not licensed for reuse unless explicit written permission is granted by the author.
-
-这些内容保留所有权利，不随本仓库的开源 / 开放授权一起开放：
-
-- 老胡个人头像、人物形象、数字人形象
-- 二维码图片、账号入口图、联系方式图片
-- 微信公众号封面图、课程封面图、宣传图
-- 任何包含“老胡用AI赚钱”“老胡”个人品牌识别的图片、封面、海报或账号资产
-
-Current examples include:
-
-- `assets/laohu-account-qr-card.png`
-- `assets/laohu-side-business-article-cover.png`
-
-These files may be displayed as part of this repository's README and GitHub project page. They may not be copied, reused, modified, redistributed, used in another project, used for promotion, or used for commercial purposes without permission.
-
-## 4. Commercial Use
-
-Commercial use of the code is allowed under Apache-2.0.
-
-Commercial use of the documentation, creative methods, rules, prompts, rubrics, templates, and knowledge assets is not allowed without permission, because those materials are released under CC BY-NC-SA 4.0.
-
-商业使用本项目的方法论、规则、提示词、文档、课程化内容、品牌资产或图片素材前，请先取得作者授权。
-
-## 5. Attribution
-
-When using or adapting the non-commercial documentation and creative system content, please credit:
-
-```text
-老胡用AI赚钱
-https://github.com/LaohuAD/laohu-music
-```
-
-## 6. Contact
-
-作者：老胡  
-全网同名：老胡用AI赚钱  
-Bilibili: https://space.bilibili.com/13497214
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
