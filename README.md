@@ -39,7 +39,7 @@ V4 不是旧版目录的简单扩容，而是一次重新组织：`.agents/skill
 - **血肉**：具体关系、动作、声音、身体感受、物件、职业材料和必要事实；画面是抒情触点，不是连续分镜。
 - **表皮**：自然搭配、字词、句法、雅韵、修辞、韵脚、长短句、重音、气口和可唱性。
 
-四层按优先级执行：上层不成立时不能靠下层的辞藻、押韵或排版放行。详细方法按需读取对应 Reference，避免一次加载互相重复的规则。
+四层检查方向、整体、材料技法和呈现是否共同成立，不要求所有作品使用同一种戏剧结构。人物选择作品保留冲突与代价；陪伴、庆祝、律动、幽默和纯器乐按自身体验验收。详细方法按需读取对应 Reference。
 
 用户只要求改一句时，不会强行重做整首歌；但局部问题来自人物、命题或结构时，也不会用换几个近义词假装已经修好。
 
@@ -75,6 +75,25 @@ V4 默认支持先词后曲，也允许从已有旋律、伴奏、节拍、topli
 | `laohu-project-evolution` | 吸收反馈、修正规则、补齐能力并防止同类问题复发 |
 
 `.agents/skills/` 是 Skill 正文的唯一权威来源；`.agents/references/` 保存详细方法、理论和案例。项目不会同时维护另一套同名 Skill，也不会默认一次读取全部 Reference。
+
+### 导入的参考技能库（编曲 / 作词工艺）
+
+上表九个是本项目的一级 Skill，也是唯一的对外入口。在 `laohu-lyric-composing` 与 `laohu-lyric-writing` 两个协调者目录下，各嵌套了一层二级 `skills/`，收纳从两个开源项目导入、供协调者按缺口委派的工艺执行件：
+
+| 二级库 | 位置 | 来源 | 内容 |
+|---|---|---|---|
+| 编曲工艺 `laohu-mc-*`（28 件） | `.agents/skills/laohu-lyric-composing/skills/` | [jtydhr88/music-composition-skills](https://github.com/jtydhr88/music-composition-skills) | 旋律、和声、进行、转调、对位、发展、曲式、编制弧、配器、织体、节奏、音色、混音意图、演唱指导、各风格、符号乐谱、AI 味审计、生成编译等 |
+| 作词工艺 `laohu-lw-*`（17 件） | `.agents/skills/laohu-lyric-writing/skills/` | [jtydhr88/lyric-writing-skills](https://github.com/jtydhr88/lyric-writing-skills) | 中/英/粤/日/韩语言层、押韵、结构、意象、叙事、倒字检测、rap、案例、词侧意图、后端接口等 |
+
+**改造原则（对两个来源项目一视同仁）：**
+
+- **不改主体**：每个导入 Skill 的原始正文与 `description` 一字未动，原文内部的 `lw-*`／`mc-*` 交叉引用也保持原样，靠各文件开头总纲末尾的「名称映射」行换算。
+- **只加前缀与总纲**：目录与 `name` 统一加 `laohu-` 前缀；正文顶部由 laohu 增补一段「四层能力总纲」（灵魂／筋骨／血肉／表皮），用本项目的语言说清这个 Skill 独门守着哪一层、哪件别的 Skill 顶替不了的事，并声明它不持有的判断权。
+- **协调者路由，不抢入口**：这些二级件不作为项目入口。用户与整首歌统筹始终经 `laohu-song-director`，编曲经 `laohu-lyric-composing`、作词经 `laohu-lyric-writing`；协调者遇到具体工艺缺口时才按各自的「工艺委派表」点名调用对应 `laohu-mc-*`／`laohu-lw-*`。
+- **原协调者降级**：两个来源项目各自的总入口 `mc-workflow`／`lw-workflow` 被降级为「库内导航＋边界表＋规格契约（ARR-SPEC／LYR-SPEC）」工具，不再充当入口或第二本状态账；整首歌的状态、锁定与回流仍以 `laohu-song-director` 和作品创作日志为准。
+- **审计归口**：两库的 `*-ai-tell-audit` 作为 `laohu-quality-supervisor` 的工具提供领域侧 AI 味检查条目，不自立第二套质量权威。
+
+许可与版权归原作者所有；本项目对上述文件的使用遵循各来源仓库的开源许可，改造范围仅限上面列出的前缀、总纲与路由接线。
 
 ## 快速开始
 
@@ -210,3 +229,16 @@ laohu-music/
 - 老胡个人品牌资产、账号素材和宣传图片：保留所有权利。
 
 详细条款见 [LICENSE.md](LICENSE.md)。
+
+
+## 依赖、检查与验证边界
+
+外部风格模板是可选参考，按 [external/README.md](external/README.md) 获取固定版本；新克隆没有模板也可使用本项目已有方法，不能声称读取过缺失资料。
+
+在项目根目录执行确定性回归：
+
+```sh
+python3 -B -m unittest discover -s tests -p 'test_*.py'
+```
+
+[能力场景](tests/skill-capability-scenarios.json)保存任务与评审依据；实际应用时只把任务和必要输入交给执行者，预期判断留给评审。测试覆盖不等于成品质量已证实。规则、作品状态与本轮验证的详细去向见[架构优化记录](docs/架构优化记录.md)；音频改善仍需真实生成、试听及用户选择。

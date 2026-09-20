@@ -13,12 +13,14 @@ from pathlib import Path
 SECTION_TAGS = {
     "intro", "verse", "pre-chorus", "chorus", "post-chorus",
     "bridge", "interlude", "transition", "break", "hook", "build-up",
-    "instrumental", "inst", "solo", "outro",
+    "instrumental", "inst", "solo", "outro", "drop", "breakdown",
+    "dance break", "refrain", "strophe", "link", "middle eight",
 }
 NUMBERABLE_SECTION_TAGS = {
     "verse", "pre-chorus", "chorus", "post-chorus",
     "bridge", "interlude", "transition", "break", "hook", "build-up",
-    "instrumental", "inst", "solo",
+    "instrumental", "inst", "solo", "drop", "breakdown",
+    "dance break", "refrain", "strophe", "link", "middle eight",
 }
 
 SECTION_ALIASES = {
@@ -131,7 +133,9 @@ def normalize(text: str, allow_performance_reflow: bool = False) -> str:
         if section_match and is_section_tag(section_match.group(1)):
             output.append(f"[{canonical_section_tag(section_match.group(1))}]")
             continue
-        if stripped.startswith("[") and stripped.endswith("]"):
+        # Only explicit performance annotations may disappear. An unknown
+        # bracketed line might be a section: retain it so changes cannot pass.
+        if re.fullmatch(r"\[\(.+\)\]", stripped):
             continue
         output.append(inline_control.sub("", line))
     normalized = "\n".join(output).strip()
@@ -315,11 +319,46 @@ def count_controls(text: str) -> int:
             if (section_match.group(3) or "").strip():
                 count += 1
             continue
-        if re.fullmatch(r"\[\(.+\)\]", stripped):
+        if re.fullmatch(r"\[\(.+\)\]", stripped) or re.fullmatch(r"\[\[.+\]\]", stripped):
             count += 1
-        else:
+        elif stripped[1:-1].split(":", 1)[0].strip().lower() in DOCUMENTED_LINE_CONTROLS | PROJECT_TESTED_LINE_CONTROLS:
             count += 1
     return count
+
+
+def validate_pure_lyrics(text: str) -> list[dict]:
+    """Check the project's default pure-lyrics carrier, not artistic merit.
+
+    The format reference owns the contract. Explicit platform/custom carriers
+    continue to use their own validators; this mode never strips controls.
+    """
+    allowed = {
+        "intro", "verse", "pre-chorus", "chorus", "post-chorus", "bridge",
+        "outro", "interlude", "refrain", "link", "instrumental break",
+        "guitar solo", "piano solo", "breakdown", "drop", "dance break",
+    }
+    errors = []
+    has_section = False
+    lyric_count = 0
+    for number, raw in enumerate(text.splitlines(), 1):
+        line = raw.strip()
+        if not line:
+            continue
+        tag = re.fullmatch(r"\[([a-z]+(?:[ -][a-z]+)*)(?: [1-9][0-9]*)?\]", line)
+        if tag and tag.group(1) in allowed:
+            has_section = True
+            continue
+        if re.search(r"[\[\]［］【】]", line) or re.match(r"(?:#{1,6}\s|\*|`|>\s|[-+]\s)", line):
+            errors.append({"line": number, "code": "invalid-tag-or-markup", "text": line})
+            continue
+        if not has_section:
+            errors.append({"line": number, "code": "lyric-before-section", "text": line})
+        if re.search(r"[，。？！：；、‘’“”《》〈〉（）()|｜/]", line):
+            errors.append({"line": number, "code": "punctuation-or-control-in-pure-lyrics", "text": line})
+        lyric_count += 1
+    if not has_section or not lyric_count:
+        errors.append({"line": 0, "code": "missing-section-or-lyrics"})
+    return errors
 
 
 def main() -> int:
@@ -329,7 +368,7 @@ def main() -> int:
         "--ai-lyrics",
         "--controlled-lyrics",
         dest="ai_lyrics",
-        required=True,
+        required=False,
         help="Platform-ready AI Lyrics package; --controlled-lyrics remains as a compatibility alias",
     )
     parser.add_argument("--section", help="Extract an AI Lyrics or Controlled Lyrics section from a combined Markdown package")
@@ -361,7 +400,21 @@ def main() -> int:
         help="Return a non-zero exit code when lint warnings are present",
     )
     parser.add_argument("--json", action="store_true", dest="as_json")
+    parser.add_argument("--pure-format", action="store_true", help="Check only the default pure lyric body's tags and formatting; no artistic judgement")
     args = parser.parse_args()
+
+    if args.pure_format:
+        if args.ai_lyrics or args.section or args.require_controls or args.require_package_fields or args.control_syntax != "auto" or args.lint or args.strict_warnings or args.allow_performance_reflow:
+            parser.error("--pure-format is independent of comparison and performance-control options")
+        try:
+            errors = validate_pure_lyrics(read_text(args.lyrics))
+        except OSError as error:
+            parser.error(str(error))
+        result = {"format_valid": not errors, "errors": errors, "scope": "default-pure-lyrics-format-only"}
+        print(json.dumps(result, ensure_ascii=False) if args.as_json else ("PASS: pure lyric format" if not errors else "FAIL: " + json.dumps(errors, ensure_ascii=False)))
+        return 1 if errors else 0
+    if not args.ai_lyrics:
+        parser.error("--ai-lyrics is required unless --pure-format is selected")
 
     try:
         locked_text = read_text(args.lyrics)

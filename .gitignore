@@ -5,3 +5,9 @@ __pycache__/
 # 正式作品和创作日志只保存在本地，公开仓库只保留使用说明。
 作品/*
 !作品/README.md
+
+# 可选第三方参考按 external/README.md 固定版本获取。
+/external/MiniMax-Music3/
+
+# FUSE 挂载在原地编辑时产生的隐藏临时文件
+.fuse_hidden*
