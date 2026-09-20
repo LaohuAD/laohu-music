@@ -82,14 +82,14 @@ V4 默认支持先词后曲，也允许从已有旋律、伴奏、节拍、topli
 
 | 二级库 | 位置 | 来源 | 内容 |
 |---|---|---|---|
-| 编曲工艺 `laohu-mc-*`（28 件） | `.agents/skills/laohu-lyric-composing/skills/` | [jtydhr88/music-composition-skills](https://github.com/jtydhr88/music-composition-skills) | 旋律、和声、进行、转调、对位、发展、曲式、编制弧、配器、织体、节奏、音色、混音意图、演唱指导、各风格、符号乐谱、AI 味审计、生成编译等 |
-| 作词工艺 `laohu-lw-*`（17 件） | `.agents/skills/laohu-lyric-writing/skills/` | [jtydhr88/lyric-writing-skills](https://github.com/jtydhr88/lyric-writing-skills) | 中/英/粤/日/韩语言层、押韵、结构、意象、叙事、倒字检测、rap、案例、词侧意图、后端接口等 |
+| 编曲工艺 `mc-*`（29 件） | `.agents/skills/laohu-lyric-composing/skills/` | [jtydhr88/music-composition-skills](https://github.com/jtydhr88/music-composition-skills) | 旋律、和声、进行、转调、对位、发展、曲式、编制弧、配器、织体、节奏、音色、混音意图、演唱指导、各风格、符号乐谱、AI 味审计、生成编译等 |
+| 作词工艺 `lw-*`（18 件） | `.agents/skills/laohu-lyric-writing/skills/` | [jtydhr88/lyric-writing-skills](https://github.com/jtydhr88/lyric-writing-skills) | 中/英/粤/日/韩语言层、押韵、结构、意象、叙事、倒字检测、rap、案例、词侧意图、后端接口等 |
 
 **改造原则（对两个来源项目一视同仁）：**
 
-- **不改主体**：每个导入 Skill 的原始正文与 `description` 一字未动，原文内部的 `lw-*`／`mc-*` 交叉引用也保持原样，靠各文件开头总纲末尾的「名称映射」行换算。
-- **只加前缀与总纲**：目录与 `name` 统一加 `laohu-` 前缀；正文顶部由 laohu 增补一段「四层能力总纲」（灵魂／筋骨／血肉／表皮），用本项目的语言说清这个 Skill 独门守着哪一层、哪件别的 Skill 顶替不了的事，并声明它不持有的判断权。
-- **协调者路由，不抢入口**：这些二级件不作为项目入口。用户与整首歌统筹始终经 `laohu-song-director`，编曲经 `laohu-lyric-composing`、作词经 `laohu-lyric-writing`；协调者遇到具体工艺缺口时才按各自的「工艺委派表」点名调用对应 `laohu-mc-*`／`laohu-lw-*`。
+- **不改主体**：每个导入 Skill 的原始正文与 `description` 一字未动，原文内部的 `lw-*`／`mc-*` 交叉引用保持上游原样；目录名与 `name` 也还原为上游裸名，正文引用与目录同名直接命中，无需换算。
+- **还原为上游裸名**：目录与 `name` 均为上游原始的 `lw-*`／`mc-*`（不加任何前缀）；正文顶部由 laohu 增补一段「四层能力总纲」（灵魂／筋骨／血肉／表皮），用本项目的语言说清这个 Skill 独门守着哪一层、哪件别的 Skill 顶替不了的事，并声明它不持有的判断权。
+- **协调者路由，不抢入口**：这些二级件不作为项目入口。用户与整首歌统筹始终经 `laohu-song-director`，编曲经 `laohu-lyric-composing`、作词经 `laohu-lyric-writing`；协调者遇到具体工艺缺口时才按各自的「工艺委派表」点名调用对应 `mc-*`／`lw-*`。
 - **原协调者降级**：两个来源项目各自的总入口 `mc-workflow`／`lw-workflow` 被降级为「库内导航＋边界表＋规格契约（ARR-SPEC／LYR-SPEC）」工具，不再充当入口或第二本状态账；整首歌的状态、锁定与回流仍以 `laohu-song-director` 和作品创作日志为准。
 - **审计归口**：两库的 `*-ai-tell-audit` 作为 `laohu-quality-supervisor` 的工具提供领域侧 AI 味检查条目，不自立第二套质量权威。
 
