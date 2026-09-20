@@ -418,33 +418,33 @@ Rap、念白、吟诵、对白、齐唱和 Ad-lib 在灵魂层不获得独立命
 
 准备替换的句子回到表皮节的原句—最小修复—差异实现比较：先具体指出失效位置与已有表达作用，再检查新句的收益和损失。仅因“不够古、不够高级、不够整齐”而装饰，或仅因“不够常见、不够顺滑”而日常化，都不能放行；没有净收益时保留原句。真实语义、事实或声音硬伤仍须修正，不以风格名义护住错误。
 
-## 六点五、作词工艺委派：本 Skill 是协调者，语言级工艺交给 `laohu-lw-*`
+## 六点五、作词工艺委派：本 Skill 是协调者，语言级工艺交给 `lw-*`
 
-本 Skill 持有作词域的**灵魂与筋骨判断权**：关系母句、歌者立场、段落职务、乐段运动、四层门与反向审稿都由它裁决，产出锁定正文与《乐段责任图》。但**语言层面某些需要专门语音学、韵学或体裁工艺的执行**，本项目挂了一个作词工艺库 `.agents/skills/laohu-lyric-writing/skills/laohu-lw-*`（改编自 jtydhr88/lyric-writing-skills，见 README）。它们是**执行件不是入口**：用户永远从本 Skill 进入，本 Skill 遇到下列缺口时才点名调用对应工艺卡，取回结果后仍由本 Skill 裁决是否采用。
+本 Skill 持有作词域的**灵魂与筋骨判断权**：关系母句、歌者立场、段落职务、乐段运动、四层门与反向审稿都由它裁决，产出锁定正文与《乐段责任图》。但**语言层面某些需要专门语音学、韵学或体裁工艺的执行**，本项目挂了一个作词工艺库 `.agents/skills/laohu-lyric-writing/skills/lw-*`（改编自 jtydhr88/lyric-writing-skills，见 README）。它们是**执行件不是入口**：用户永远从本 Skill 进入，本 Skill 遇到下列缺口时才点名调用对应工艺卡，取回结果后仍由本 Skill 裁决是否采用。
 
 | 本 Skill 遇到的缺口 | 委派给 |
 | --- | --- |
-| 普通话字数、平仄、十三辙、顿 | `laohu-lw-mandarin` |
-| 唱出来会不会听成别的字（倒字，可程序判定） | `laohu-lw-tone-check` |
-| 粤语协音与九声（另一套硬约束，写作顺序反转） | `laohu-lw-cantonese` |
-| 英文重音、音节、prosody、气口 | `laohu-lw-english` |
-| 日文モーラ与符割り／韩文받침与连音 | `laohu-lw-japanese`／`laohu-lw-korean` |
-| 押韵类型学、韵式、意外度、故意不押 | `laohu-lw-rhyme` |
-| 行长怎么数、段落功能、hook 放哪、平衡与不平衡 | `laohu-lw-structure` |
-| 意象、具体名词、object writing、抽象名词黑名单 | `laohu-lw-imagery` |
-| 人称、视点、时间锚点、说话人可信度 | `laohu-lw-narrative` |
-| rap 的 flow、音节密度、切分抢拍 | `laohu-lw-rap` |
-| 中国风的物质世界一致性（时代/地方/手艺不穿帮） | `laohu-lw-chinese-style` |
-| 剧场唱词（歌即动作、唱完处境要变） | `laohu-lw-musical-theatre` |
-| 词该定哪种类型、人称/重复预算随类型定 | `laohu-lw-song-intent`（词侧意图清单，**不夺选题权**，立意仍归 `laohu-lyric-topic`） |
-| 拆解对标词、从成品反推机制 | `laohu-lw-case-studies`（证据不是规则） |
-| 交给 Suno 等后端的歌词文本接口 | `laohu-lw-suno-interface` |
-| 某个作词决策到底归哪个 `laohu-lw-*` | `laohu-lw-workflow`（库内导航＋边界表，**已降级，不是入口**） |
+| 普通话字数、平仄、十三辙、顿 | `lw-mandarin` |
+| 唱出来会不会听成别的字（倒字，可程序判定） | `lw-tone-check` |
+| 粤语协音与九声（另一套硬约束，写作顺序反转） | `lw-cantonese` |
+| 英文重音、音节、prosody、气口 | `lw-english` |
+| 日文モーラ与符割り／韩文받침与连音 | `lw-japanese`／`lw-korean` |
+| 押韵类型学、韵式、意外度、故意不押 | `lw-rhyme` |
+| 行长怎么数、段落功能、hook 放哪、平衡与不平衡 | `lw-structure` |
+| 意象、具体名词、object writing、抽象名词黑名单 | `lw-imagery` |
+| 人称、视点、时间锚点、说话人可信度 | `lw-narrative` |
+| rap 的 flow、音节密度、切分抢拍 | `lw-rap` |
+| 中国风的物质世界一致性（时代/地方/手艺不穿帮） | `lw-chinese-style` |
+| 剧场唱词（歌即动作、唱完处境要变） | `lw-musical-theatre` |
+| 词该定哪种类型、人称/重复预算随类型定 | `lw-song-intent`（词侧意图清单，**不夺选题权**，立意仍归 `laohu-lyric-topic`） |
+| 拆解对标词、从成品反推机制 | `lw-case-studies`（证据不是规则） |
+| 交给 Suno 等后端的歌词文本接口 | `lw-suno-interface` |
+| 某个作词决策到底归哪个 `lw-*` | `lw-workflow`（库内导航＋边界表，**已降级，不是入口**） |
 
 三条边界防串权：
-1. **结构分层**——一行「多长」怎么数归 `laohu-lw-structure`／各语言层；但「用这个长度做什么段落、hook 放哪」的裁决仍是本 Skill 的筋骨权，工艺卡只给数与法，不定段落职务。
-2. **意图不越选题**——`laohu-lw-song-intent` 只提供词侧类型与意图清单，作品的关系母句、立意、受众与作品总线由 `laohu-lyric-topic` 唯一裁决；两者冲突以 `laohu-lyric-topic` 为准。
-3. **审计归监督**——`laohu-lw-ai-tell-audit` 只提供作词侧 AI 味检查条目，能不能交稿、跨领域质量红线由 `laohu-quality-supervisor` 统一裁决，本 Skill 与工艺卡都不自立第二套质量权威。
+1. **结构分层**——一行「多长」怎么数归 `lw-structure`／各语言层；但「用这个长度做什么段落、hook 放哪」的裁决仍是本 Skill 的筋骨权，工艺卡只给数与法，不定段落职务。
+2. **意图不越选题**——`lw-song-intent` 只提供词侧类型与意图清单，作品的关系母句、立意、受众与作品总线由 `laohu-lyric-topic` 唯一裁决；两者冲突以 `laohu-lyric-topic` 为准。
+3. **审计归监督**——`lw-ai-tell-audit` 只提供作词侧 AI 味检查条目，能不能交稿、跨领域质量红线由 `laohu-quality-supervisor` 统一裁决，本 Skill 与工艺卡都不自立第二套质量权威。
 
 工艺卡各自开头「四层能力总纲」写明了它独门守着哪一层、以及它不持有的判断权，调用时以那份声明为界。
 

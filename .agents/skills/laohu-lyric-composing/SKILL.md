@@ -144,37 +144,37 @@ description: "用于任务核心已经从歌词文字转向音乐创作、音乐
 
 形成方案时至少比较两个真正不同的声音方向，再决定是否公开。候选必须改变 hook 的到达、能量分配、重复意义、演唱姿态或结尾听觉后果中的至少一项；只换乐器、相近 BPM、风格标签和制作形容词，仍是同一方案的表皮变体。
 
-### 2.7 编曲工艺委派：本 Skill 是协调者，具体工艺交给 `laohu-mc-*` 库
+### 2.7 编曲工艺委派：本 Skill 是协调者，具体工艺交给 `mc-*` 库
 
-本 Skill 保留全部灵魂与筋骨判断权：主听觉命题、六个部门激活与否、副歌到达策略、艺术赌注登记、词曲接口裁决、总线一致性，都由本 Skill 定，不外包。但六个部门内部的**血肉与表皮工艺**——具体怎么写这条旋律线、这组和声怎么上色、这套鼓怎么打得像人——委派给挂在本 Skill 目录下 `skills/` 里的 `laohu-mc-*` 工艺库执行。它们是本 Skill 手里的执行件，**用户不从它们进入整首歌**；本 Skill 判定某个声音部门出现工艺缺口时才点名调用对应件。
+本 Skill 保留全部灵魂与筋骨判断权：主听觉命题、六个部门激活与否、副歌到达策略、艺术赌注登记、词曲接口裁决、总线一致性，都由本 Skill 定，不外包。但六个部门内部的**血肉与表皮工艺**——具体怎么写这条旋律线、这组和声怎么上色、这套鼓怎么打得像人——委派给挂在本 Skill 目录下 `skills/` 里的 `mc-*` 工艺库执行。它们是本 Skill 手里的执行件，**用户不从它们进入整首歌**；本 Skill 判定某个声音部门出现工艺缺口时才点名调用对应件。
 
 | 本 Skill 已决定方向、需要落地的工艺缺口 | 委派给 |
 |---|---|
-| 旋律线怎么写、音高走向、最高音落点、由歌手换声点定调 | `laohu-mc-melody` |
-| 和声功能骨架（先 T-S-D 再上色）、调外和弦 | `laohu-mc-harmony` |
-| 具体和弦进行、避开模型最爱的套路进行、和声节奏 | `laohu-mc-progressions` |
-| 离调与转调、接缝该多明显 | `laohu-mc-modulation` |
-| 第二条线的对位（互补轴、横向声部进行规则） | `laohu-mc-counterpoint` |
-| 节奏性格判定（这条节奏是什么、beat 感 vs 速度） | `laohu-mc-rhythm-groove` |
-| 鼓组与贝司怎么打得像真人、量化到什么程度 | `laohu-mc-rhythm-section` |
-| 块级曲式乐理（这段该叫什么、是一段还是两段） | `laohu-mc-form` |
-| 全曲能量弧、乐器进退场、减法事件 | `laohu-mc-arrangement-arch` |
-| 谁来奏这条线、几件叠起来变成什么新音色 | `laohu-mc-orchestration` |
-| 单件音色从零点设计、音区、心理声学约束 | `laohu-mc-sound-design` |
-| 空间预算、前景/背景感知线索、冲突改写而非改混 | `laohu-mc-texture-layering` |
-| 主题材料在某段做了什么发展（封闭十操作） | `laohu-mc-development` |
-| 这些字具体怎么唱（气声、力度、pitch 偏移、咬字时机） | `laohu-mc-vocal-direction` |
-| 混音意图（mood 否决权、深度一致、诊断糊先查持续音） | `laohu-mc-mix-intent` |
-| 风格落地与风格融合（citypop/edm/hiphop/jazz/影视/国风/摇滚…） | `laohu-mc-style-*` ＋ `laohu-mc-workflow` §2.4 |
-| 规格单编译成各后端输入、符号乐谱 | `laohu-mc-render-compile`、`laohu-mc-symbolic-score` |
-| 成品有没有 AI 味（照做率 vs 旗标数分开看） | `laohu-mc-ai-tell-audit`（只作为 `laohu-quality-supervisor` 的工具，不单独判交稿） |
-| 不确定某个编曲决策归库内哪个件、要不要跑测试 | `laohu-mc-workflow`（库内导航＋边界表＋ARR-SPEC 契约，**非入口**） |
+| 旋律线怎么写、音高走向、最高音落点、由歌手换声点定调 | `mc-melody` |
+| 和声功能骨架（先 T-S-D 再上色）、调外和弦 | `mc-harmony` |
+| 具体和弦进行、避开模型最爱的套路进行、和声节奏 | `mc-progressions` |
+| 离调与转调、接缝该多明显 | `mc-modulation` |
+| 第二条线的对位（互补轴、横向声部进行规则） | `mc-counterpoint` |
+| 节奏性格判定（这条节奏是什么、beat 感 vs 速度） | `mc-rhythm-groove` |
+| 鼓组与贝司怎么打得像真人、量化到什么程度 | `mc-rhythm-section` |
+| 块级曲式乐理（这段该叫什么、是一段还是两段） | `mc-form` |
+| 全曲能量弧、乐器进退场、减法事件 | `mc-arrangement-arch` |
+| 谁来奏这条线、几件叠起来变成什么新音色 | `mc-orchestration` |
+| 单件音色从零点设计、音区、心理声学约束 | `mc-sound-design` |
+| 空间预算、前景/背景感知线索、冲突改写而非改混 | `mc-texture-layering` |
+| 主题材料在某段做了什么发展（封闭十操作） | `mc-development` |
+| 这些字具体怎么唱（气声、力度、pitch 偏移、咬字时机） | `mc-vocal-direction` |
+| 混音意图（mood 否决权、深度一致、诊断糊先查持续音） | `mc-mix-intent` |
+| 风格落地与风格融合（citypop/edm/hiphop/jazz/影视/国风/摇滚…） | `mc-style-*` ＋ `mc-workflow` §2.4 |
+| 规格单编译成各后端输入、符号乐谱 | `mc-render-compile`、`mc-symbolic-score` |
+| 成品有没有 AI 味（照做率 vs 旗标数分开看） | `mc-ai-tell-audit`（只作为 `laohu-quality-supervisor` 的工具，不单独判交稿） |
+| 不确定某个编曲决策归库内哪个件、要不要跑测试 | `mc-workflow`（库内导航＋边界表＋ARR-SPEC 契约，**非入口**） |
 
 ⚠ 三条边界，防止把判断权也一起外包出去：
 
-1. **`laohu-mc-workflow` 不是入口、不是第二本状态账**。它原是编曲库的入口＋总协调者，在本项目被降级为库内导航工具；整首歌统筹仍归 `laohu-song-director`，编曲域统筹仍归本 Skill。ARR-SPEC 只作可选的规格参照，作品当前状态以创作日志为唯一权威。
-2. **人声分两层**：本 Skill 的 §4 词曲接口、`laohu-mc-vocal-direction` 管「这些字怎么唱」（演唱表现）；「字落在哪个音、会不会倒字」是作词库 `laohu-lw-tone-check` 的语言正确性判断，不在这里裁决。
-3. **生成交付以 `laohu-mc-render-compile` 为唯一编译器**；作词库的 `laohu-lw-suno-interface` 只管词侧文本对接，重叠处以编曲库编译器为准。
+1. **`mc-workflow` 不是入口、不是第二本状态账**。它原是编曲库的入口＋总协调者，在本项目被降级为库内导航工具；整首歌统筹仍归 `laohu-song-director`，编曲域统筹仍归本 Skill。ARR-SPEC 只作可选的规格参照，作品当前状态以创作日志为唯一权威。
+2. **人声分两层**：本 Skill 的 §4 词曲接口、`mc-vocal-direction` 管「这些字怎么唱」（演唱表现）；「字落在哪个音、会不会倒字」是作词库 `lw-tone-check` 的语言正确性判断，不在这里裁决。
+3. **生成交付以 `mc-render-compile` 为唯一编译器**；作词库的 `lw-suno-interface` 只管词侧文本对接，重叠处以编曲库编译器为准。
 
 ## 3. 段落声音总线
 
